@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cctype>
 #include <string>
+#include <sstream>
 using namespace std;
 
 
@@ -18,6 +19,8 @@ vector<int> vectorizeques(string ques)
 {
     ques = toLowerCase(ques);
 
+    stringstream ss(ques);
+    string word;
    
     vector<pair<string, pair<int, int>>> keywords = {
         {"sweet", {0, 2}},
@@ -47,44 +50,20 @@ vector<int> vectorizeques(string ques)
         {"least", {-1, -5}}};
 
     vector<int> result = {5, 5, 5, 5}; 
-    string word = "";
-    int prefix=0;
-
-    for (int i = 0; i <= ques.size(); i++)
-    {
-        if (i == ques.size() || ques[i] == ' ')
-        {
-            if (!word.empty())
-            {
-                for (auto &kw : keywords)
-                {
-                    if (word == kw.first)
-                    {
-                        int dim = kw.second.first;
-                        int val = kw.second.second;
-
-                    
-                        if (dim == -1)
-                        {
-                            prefix = val;
-                        }
-                        else
-                        {
-                            result[dim] += val + prefix;
-                        }
-                        break;
-                    }
+    int prefix = 0;
+    while(ss>>word){
+        for (auto &kw : keywords){
+            if (word == kw.first){
+                int dim = kw.second.first;
+                int val = kw.second.second;
+                if(dim == -1){
+                    prefix = val;
+                }else{
+                    result[dim] += val + prefix;
                 }
             }
-            word = "";
-        }
-        else
-        {
-            word += ques[i];
-        }
     }
 
-   
     for (int &val : result)
     {
         if (val < 0)
