@@ -62,6 +62,7 @@ vector<int> vectorizeques(string ques)
                     result[dim] += val + prefix;
                 }
             }
+        }
     }
 
     for (int &val : result)
